@@ -61,7 +61,6 @@ struct flb_azure *flb_azure_conf_create(struct flb_output_instance *ins,
     }
     else {
         flb_plg_error(ctx->ins, "property 'shared_key' is not defined");
-        flb_azure_conf_destroy(ctx);
         return NULL;
     }
 
@@ -93,7 +92,6 @@ struct flb_azure *flb_azure_conf_create(struct flb_output_instance *ins,
         ctx->log_type = flb_sds_create(FLB_AZURE_LOG_TYPE);
     }
     if (!ctx->log_type) {
-        flb_azure_conf_destroy(ctx);
         return NULL;
     }
 
@@ -206,17 +204,8 @@ int flb_azure_conf_destroy(struct flb_azure *ctx)
         return -1;
     }
 
-    if (ctx->customer_id) {
-        flb_sds_destroy(ctx->customer_id);
-    }
     if (ctx->dec_shared_key) {
         flb_sds_destroy(ctx->dec_shared_key);
-    }
-    if (ctx->shared_key) {
-        flb_sds_destroy(ctx->shared_key);
-    }
-    if (ctx->log_type) {
-        flb_sds_destroy(ctx->log_type);
     }
     if (ctx->time_key) {
         flb_sds_destroy(ctx->time_key);
